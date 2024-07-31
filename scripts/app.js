@@ -11,7 +11,6 @@ function getWeather() {
       return resp.json();
     })
     .then((data) => {
-      // console.log(data);
       currentInfo(
         data.location.name,
         data.current.temp_c,
