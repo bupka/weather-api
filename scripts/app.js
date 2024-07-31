@@ -46,22 +46,25 @@ function weeklyInfo(data) {
   weeklyForecast.innerHTML = weeklyData
     .map((day) => {
       let date = new Date(day.date_epoch * 1000);
+      let options = { weekday: "long" };
+      let dayName = date.toLocaleDateString("en-US", options);
+
+      let maxTemp = day.day.maxtemp_c;
+      let wholeMaxTemp = Math.floor(maxTemp);
+      let minTemp = day.day.mintemp_c;
+      let wholeMinTem = Math.floor(minTemp);
+
       return `
           <div class='p-4 flex justify-between'>
             <div class='flex'>
-              <img class='w-28 object-contain' src="${
-                day.day.condition.icon
-              }" alt="${day.day.condition.text}" />
-              <p class='text-white text-1xl place-self-center'>${
-                day.day.condition.text
-              }</p>
+              <img class='w-28 object-contain' src="${day.day.condition.icon}" alt="${day.day.condition.text}" />
+              <p class='text-white text-opacity-70 place-self-center'>${day.day.condition.text}</p>
             </div>
-            <div class='flex flex-col justify-around '>
-              <p class='text-white text-1xl place-self-center'>${
-                day.day.maxtemp_c
-              }° / ${day.day.mintemp_c}°</p>
-              <date class="text-white text-1xl place-self-center">${date.toDateString()}</date>
+            <div class='w-28 place-content-center'>
+              <span class='text-white text-opacity-80 place-self-center'>${wholeMaxTemp}°</span><span class='text-white text-opacity-50 place-self-center'> /${wholeMinTem}°</span>
+              <p class="text-white text-opacity-50 place-self-center">${dayName}</p>
             </div>
+
           </div>`;
     })
     .join("");
@@ -89,10 +92,12 @@ function hourlyData(data) {
       let hourOnly = date.getHours();
 
       return `
-        <div class='flex flex-col items-center p-4'>
-          <p class='text-white text-1xl'>${formatHour(hourOnly)}</p>
+        <div class='flex flex-col items-center'>
+          <p class='text-white text-opacity-50 text-1xl'>${formatHour(
+            hourOnly
+          )}</p>
           <img src="${hour.condition.icon}" alt="${hour.condition.text}" />
-          <p class='text-white text-1xl '>${hour.temp_c}°C</p>
+          <p class='text-white text-opacity-90 text-1xl '>${hour.temp_c}°</p>
         </div>
        `;
     })
@@ -106,23 +111,31 @@ function airConditions(data) {
 
   airConditions.innerHTML = `
               <div>
-                <i class="fa-solid fa-temperature-half"></i>
-                Real Feel
+                <span class='text-white text-opacity-50'>
+                  <i class="fa-solid fa-temperature-half"></i>
+                  Real Feel
+                </span> 
                 <h2 class="text-3xl pt-2">${airData.heatindex_c}°C</h2>
               </div>
               <div>
-                <i class="fa-solid fa-cloud-showers-heavy"></i>
-                Chance of rain
+                <span class='text-white text-opacity-50'>
+                  <i class="fa-solid fa-cloud-showers-heavy"></i>
+                  Chance of rain
+                </span> 
                 <h2 class="text-3xl pt-2">${airData.precip_mm} mm</h2>
               </div>
               <div>
-                <i class="fa-solid fa-sun"></i>
-                UV Index
+                <span class='text-white text-opacity-50'>
+                  <i class="fa-solid fa-sun"></i>
+                  UV Index
+                </span> 
                 <h2 class="text-3xl pt-2">${airData.uv}</h2>
               </div>
               <div>
-                <i class="fa-solid fa-wind"></i>
-                Wind
+                <span class='text-white text-opacity-50'>
+                  <i class="fa-solid fa-wind"></i>
+                  Wind
+                </span>
                 <h2 class="text-3xl pt-2">${airData.wind_kph} km/h</h2>
               </div>
               `;
