@@ -3,7 +3,7 @@ import WEATHER_API_KEY from "./apikey.js";
 function getWeather() {
   const apiKey = WEATHER_API_KEY;
   const city = document.getElementById("city").value || "Pristina";
-  const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=6&aqi=no&alerts=no&lang=en`;
+  const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=6&lang=en`;
 
   fetch(apiUrl)
     .then((resp) => {
@@ -11,6 +11,7 @@ function getWeather() {
       return resp.json();
     })
     .then((data) => {
+      // console.log(data);
       currentInfo(
         data.location.name,
         data.current.temp_c,
@@ -18,6 +19,7 @@ function getWeather() {
       );
       weeklyInfo(data);
       hourlyData(data);
+      airConditions(data);
     })
     .catch(console.err);
 }
@@ -45,7 +47,7 @@ function weeklyInfo(data) {
     .map((day) => {
       let date = new Date(day.date_epoch * 1000);
       return `
-          <div class='p-4 flex justify-between border-b-2 border-blue-500 border-opacity-50'>
+          <div class='p-4 flex justify-between'>
             <div class='flex'>
               <img class='w-28 object-contain' src="${
                 day.day.condition.icon
@@ -95,6 +97,35 @@ function hourlyData(data) {
        `;
     })
     .join("");
+}
+
+function airConditions(data) {
+  const airConditions = document.getElementById("airConditions");
+
+  const airData = data.current;
+
+  airConditions.innerHTML = `
+              <div>
+                <i class="fa-solid fa-temperature-half"></i>
+                Real Feel
+                <h2 class="text-3xl pt-2">${airData.heatindex_c}°C</h2>
+              </div>
+              <div>
+                <i class="fa-solid fa-cloud-showers-heavy"></i>
+                Chance of rain
+                <h2 class="text-3xl pt-2">${airData.precip_mm} mm</h2>
+              </div>
+              <div>
+                <i class="fa-solid fa-sun"></i>
+                UV Index
+                <h2 class="text-3xl pt-2">${airData.uv}</h2>
+              </div>
+              <div>
+                <i class="fa-solid fa-wind"></i>
+                Wind
+                <h2 class="text-3xl pt-2">${airData.wind_kph} km/h</h2>
+              </div>
+              `;
 }
 
 function formatHour(hour) {
