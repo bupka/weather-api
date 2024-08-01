@@ -11,7 +11,7 @@ function getWeather() {
       return resp.json();
     })
     .then((data) => {
-      // console.log(data);
+      console.log(data);
       currentInfo(
         data.location.name,
         data.current.temp_c,
@@ -28,13 +28,13 @@ function currentInfo(name, temp, icon) {
   const currentInfo = document.getElementById("currentInfo");
   currentInfo.innerHTML = `
   <div class="w-80 flex flex-col justify-between">
-    <h1 class="text-white text-5xl font-semibold">
+    <h1 class="text-white text-2xl font-semibold">
       ${name}
     </h1>
     <p class="text-white text-3xl font-medium" >${temp}°</p>
   </div>
-  <div class="w-32 h-32">
-    <img src="${icon}" alt="Weather Icon" class='w-full h-full object-contain' />
+  <div class='my-auto'>
+    <img src="${icon}" alt="Weather Icon" class='h-28 w-28 md:h-full md:w-48 object-contain ite ' />
   </div>
   `;
 }
@@ -55,16 +55,15 @@ function weeklyInfo(data) {
       let wholeMinTem = Math.floor(minTemp);
 
       return `
-          <div class='p-4 flex justify-between'>
-            <div class='flex'>
-              <img class='w-28 object-contain' src="${day.day.condition.icon}" alt="${day.day.condition.text}" />
+          <div class='py-4 flex justify-between '>
+            <div class='flex pr-2'>
+              <img class='object-contain' src="${day.day.condition.icon}" alt="${day.day.condition.text}" />
               <p class='text-white text-opacity-70 place-self-center'>${day.day.condition.text}</p>
             </div>
-            <div class='w-28 place-content-center'>
+            <div class='place-content-center'>
               <span class='text-white text-opacity-80 place-self-center'>${wholeMaxTemp}°</span><span class='text-white text-opacity-50 place-self-center'> /${wholeMinTem}°</span>
               <p class="text-white text-opacity-50 place-self-center">${dayName}</p>
             </div>
-
           </div>`;
     })
     .join("");
@@ -92,12 +91,12 @@ function hourlyData(data) {
       let hourOnly = date.getHours();
 
       return `
-        <div class='flex flex-col items-center'>
-          <p class='text-white text-opacity-50 text-1xl'>${formatHour(
+        <div class='flex flex-col items-center p-2'>
+          <p class='text-white text-opacity-50 text-center '>${formatHour(
             hourOnly
           )}</p>
           <img src="${hour.condition.icon}" alt="${hour.condition.text}" />
-          <p class='text-white text-opacity-90 text-1xl '>${hour.temp_c}°</p>
+          <p class='text-white text-opacity-90 text-center'>${hour.temp_c}°</p>
         </div>
        `;
     })
@@ -110,35 +109,35 @@ function airConditions(data) {
   const airData = data.current;
 
   airConditions.innerHTML = `
-              <div>
-                <span class='text-white text-opacity-50'>
-                  <i class="fa-solid fa-temperature-half"></i>
-                  Real Feel
-                </span> 
-                <h2 class="text-3xl pt-2">${airData.heatindex_c}°C</h2>
-              </div>
-              <div>
-                <span class='text-white text-opacity-50'>
-                  <i class="fa-solid fa-cloud-showers-heavy"></i>
-                  Chance of rain
-                </span> 
-                <h2 class="text-3xl pt-2">${airData.precip_mm} mm</h2>
-              </div>
-              <div>
-                <span class='text-white text-opacity-50'>
-                  <i class="fa-solid fa-sun"></i>
-                  UV Index
-                </span> 
-                <h2 class="text-3xl pt-2">${airData.uv}</h2>
-              </div>
-              <div>
-                <span class='text-white text-opacity-50'>
-                  <i class="fa-solid fa-wind"></i>
-                  Wind
-                </span>
-                <h2 class="text-3xl pt-2">${airData.wind_kph} km/h</h2>
-              </div>
-              `;
+  <div class="flex flex-col items-center">
+    <span class="text-white text-base text-opacity-50 flex items-center">
+      <i class="fa-solid fa-temperature-half mr-2"></i>
+      Real Feel
+    </span>
+    <h2 class="text-base pt-2">${airData.heatindex_c}°C</h2>
+  </div>
+  <div class="flex flex-col items-center">
+    <span class="text-white text-base text-opacity-50 flex items-center">
+      <i class="fa-solid fa-cloud-showers-heavy mr-2"></i>
+      Chance of rain
+    </span>
+    <h2 class="text-base pt-2">${airData.precip_mm} mm</h2>
+  </div>
+  <div class="flex flex-col items-center">
+    <span class="text-white text-base text-opacity-50 flex items-center">
+      <i class="fa-solid fa-sun mr-2"></i>
+      UV Index
+    </span>
+    <h2 class="text-base pt-2">${airData.uv}</h2>
+  </div>
+  <div class="flex flex-col items-center">
+    <span class="text-white text-base text-opacity-50 flex items-center">
+      <i class="fa-solid fa-wind mr-2"></i>
+      Wind
+    </span>
+    <h2 class="text-base pt-2">${airData.wind_kph} km/h</h2>
+  </div>
+`;
 }
 
 function formatHour(hour) {
